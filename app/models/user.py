@@ -11,7 +11,7 @@ from pydantic import (
     model_validator,
 )
 
-USERNAME_REGEXP = r"^\w{3,36}$"
+USERNAME_REGEXP = r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
 
 
 class UserStatus(str, Enum):
