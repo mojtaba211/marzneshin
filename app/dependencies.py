@@ -59,7 +59,7 @@ def sudo_admin(admin: Annotated[Admin, Depends(get_current_admin)]):
 
 
 def get_subscription_user(
-    username: str, key: str, db: Annotated[Session, Depends(get_db)]
+    username: str, db: Annotated[Session, Depends(get_db)]
 ):
     # try:
     #     int(key, 16)
