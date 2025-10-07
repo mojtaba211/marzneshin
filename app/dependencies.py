@@ -61,13 +61,13 @@ def sudo_admin(admin: Annotated[Admin, Depends(get_current_admin)]):
 def get_subscription_user(
     username: str, key: str, db: Annotated[Session, Depends(get_db)]
 ):
-    try:
-        int(key, 16)
-    except ValueError:
-        raise HTTPException(status_code=404)
+    # try:
+    #     int(key, 16)
+    # except ValueError:
+    #     raise HTTPException(status_code=404)
 
     db_user = crud.get_user(db, username)
-    if db_user and db_user.key == key:
+    if db_user:
         return db_user
     else:
         raise HTTPException(status_code=404)
