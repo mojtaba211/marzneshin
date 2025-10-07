@@ -95,7 +95,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            dawsh/marzneshin:nightly
+            mojtaba211/marzneshin:nightly
 
       - name: Update Nightly Release
         if: ${{ github.event_name == 'schedule' || github.event.inputs.build-target == 'nightly'}}
