@@ -12,6 +12,7 @@ on:
         required: true
         options:
           - nightly
+          - latest
         default: "nightly"
       git-ref:
         description: "Release Git Ref (Which branch or tag to build?)"
@@ -77,7 +78,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.build-target == 'latest' }}
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -95,6 +96,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            mojtaba211/marzneshin:latest
+            mojtaba211/marzneshin:nightly
 
   
