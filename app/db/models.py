@@ -151,7 +151,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    username = Column(String(32), unique=True, index=True)
+    username = Column(String(36), unique=True, index=True)
     key = Column(String(64), unique=True)
     activated = Column(Boolean, nullable=False, default=True)
     enabled = Column(
