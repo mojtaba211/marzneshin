@@ -105,12 +105,14 @@ class UserCreate(User):
 
 
 class UserModify(UserCreate):
+    enable: bool | None = Field(None, description="Enable or disable user")
     service_ids: list[int] | None = Field(None)
     data_limit_reset_strategy: UserDataUsageResetStrategy | None = Field(None)
     expire_strategy: UserExpireStrategy | None = Field(None)
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
+                "enable": True,
                 "username": "mammad1234",
                 "service_ids": [1, 2, 3],
                 "expire_strategy": "fixed_date",
