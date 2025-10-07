@@ -16,8 +16,12 @@ from app.utils.share import (
     generate_subscription,
     generate_subscription_template,
 )
+from app.config.env import (
+    XRAY_SUBSCRIPTION_PATH
+)
 
-router = APIRouter(prefix="/sub", tags=["Subscription"])
+
+router = APIRouter(prefix=f"/{XRAY_SUBSCRIPTION_PATH}", tags=["Subscription"])
 
 
 config_mimetype = defaultdict(
