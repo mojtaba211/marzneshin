@@ -272,7 +272,7 @@ class User(Base):
         ) or SUBSCRIPTION_URL_PREFIX
         return (
             prefix.replace("*", secrets.token_hex(8))
-            + f"/sub/{self.username}/{self.key}"
+            + f"/sub/{self.username}"
         )
 
     @hybrid_property
