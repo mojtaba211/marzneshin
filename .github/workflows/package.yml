@@ -95,18 +95,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            mojtaba211/marzneshin:nightly
+            mojtaba211/marzneshin:latest
 
-      - name: Update Nightly Release
-        if: ${{ github.event_name == 'schedule' || github.event.inputs.build-target == 'nightly'}}
-        uses: andelf/nightly-release@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: nightly
-          name: 'Marzneshin nightly release $$'
-          prerelease: true
-          draft: false
-          body: |
-            This is a nightly release of Marzneshin.
-            It's unstable compared to the official releases, **use it with caution**!
+  
