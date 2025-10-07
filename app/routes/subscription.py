@@ -65,8 +65,6 @@ def user_subscription(
 
     user: UserResponse = UserResponse.model_validate(db_user)
 
-    crud.update_user_sub(db, db_user, user_agent)
-
     subscription_settings = SubscriptionSettings.model_validate(
         db.query(Settings.subscription).first()[0]
     )
@@ -78,7 +76,8 @@ def user_subscription(
         return HTMLResponse(
             generate_subscription_template(db_user, subscription_settings)
         )
-
+        
+    crud.update_user_sub(db, db_user, user_agent)
     response_headers = {
         "content-disposition": f'attachment; filename="{user.username}"',
         "profile-web-page-url": str(request.url),
