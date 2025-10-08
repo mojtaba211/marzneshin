@@ -273,11 +273,11 @@ def create_config(
             host.inbound.protocol,
         )
         network = inbound.get("network")
-        auth_uuid, auth_password = UUID(gen_uuid(key)), gen_password(key)
+        auth_uuid, auth_password = UUID(format_variables.get("USERNAME")), gen_password(key)
     else:
         inbound, protocol, network = {}, host.host_protocol, host.host_network
         auth_uuid, auth_password = (
-            UUID(host.uuid) if host.uuid else None
+            UUID(format_variables.get("USERNAME")) if host.uuid else None
         ), host.password
 
     format_variables.update(
