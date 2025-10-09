@@ -8,6 +8,7 @@ from fastapi import APIRouter
 from fastapi import HTTPException, Query
 from fastapi_pagination.ext.sqlalchemy import paginate
 from fastapi_pagination.links import Page
+from fastapi import Request
 
 from app import marznode
 from app.db import crud, User
@@ -56,6 +57,7 @@ user_filters = [
 
 @router.get("", response_model=list[UserResponse] | Page[UserResponse])
 def get_users(
+    request: Request,
     db: DBDep,
     admin: AdminDep,
     username: list[str] = Query(None),
@@ -67,8 +69,6 @@ def get_users(
     data_limit_reached: bool | None = Query(None),
     enabled: bool | None = Query(None),
     owner_username: str | None = Query(None),
-    page: int | None = Query(None, description="Page number (optional)"),
-    size: int | None = Query(None, description="Page size (optional)"),
 ):
     """
     Filters users based on the options
@@ -108,7 +108,7 @@ def get_users(
             order_column = order_column.desc()
         query = query.order_by(order_column)
 
-    if page is not None or size is not None:
+    if "page" in request.query_params or "size" in request.query_params:
         return paginate(db, query)
     else:
         users = query.all()
