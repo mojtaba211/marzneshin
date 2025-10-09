@@ -54,7 +54,7 @@ user_filters = [
 ]
 
 
-@router.get("", response_model=list[UserResponse])
+@router.get("", response_model=list[UserResponse] | Page[UserResponse])
 def get_users(
     db: DBDep,
     admin: AdminDep,
@@ -67,6 +67,8 @@ def get_users(
     data_limit_reached: bool | None = Query(None),
     enabled: bool | None = Query(None),
     owner_username: str | None = Query(None),
+    page: int | None = Query(None, description="Page number (optional)"),
+    size: int | None = Query(None, description="Page size (optional)"),
 ):
     """
     Filters users based on the options
@@ -106,9 +108,11 @@ def get_users(
             order_column = order_column.desc()
         query = query.order_by(order_column)
 
-    #return paginate(db, query)
-    users = query.all()
-    return [UserResponse.model_validate(u) for u in users]
+    if page is not None or size is not None:
+        return paginate(db, query)
+    else:
+        users = query.all()
+        return [UserResponse.model_validate(u) for u in users]
 
 
 @router.post("", response_model=UserResponse)
