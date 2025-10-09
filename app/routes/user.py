@@ -54,7 +54,7 @@ user_filters = [
 ]
 
 
-@router.get("", response_model=Page[UserResponse])
+@router.get("", response_model=list[UserResponse])
 def get_users(
     db: DBDep,
     admin: AdminDep,
