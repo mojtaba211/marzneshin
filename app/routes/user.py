@@ -106,7 +106,9 @@ def get_users(
             order_column = order_column.desc()
         query = query.order_by(order_column)
 
-    return paginate(db, query)
+    #return paginate(db, query)
+    users = query.all()
+    return [UserResponse.model_validate(u) for u in users]
 
 
 @router.post("", response_model=UserResponse)
