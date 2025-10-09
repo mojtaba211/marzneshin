@@ -58,6 +58,7 @@ user_filters = [
 @router.get("", response_model=list[UserResponse] | Page[UserResponse])
 def get_users(
     request: Request,
+    params: Params = Depends(), 
     db: DBDep,
     admin: AdminDep,
     username: list[str] = Query(None),
@@ -109,7 +110,7 @@ def get_users(
         query = query.order_by(order_column)
 
     if "page" in request.query_params or "size" in request.query_params:
-        return paginate(db, query)
+        return paginate(db, query,params)
     else:
         users = query.all()
         return [UserResponse.model_validate(u) for u in users]
