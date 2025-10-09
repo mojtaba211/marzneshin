@@ -7,6 +7,7 @@ import sqlalchemy
 from fastapi import APIRouter
 from fastapi import HTTPException, Query
 from fastapi_pagination.ext.sqlalchemy import paginate
+from fastapi_pagination import Params
 from fastapi_pagination.links import Page
 from fastapi import Request
 
