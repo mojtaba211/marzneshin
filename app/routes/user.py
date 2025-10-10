@@ -59,8 +59,8 @@ user_filters = [
 @router.get("", response_model=list[UserResponse] | Page[UserResponse])
 def get_users(
     request: Request,
-    params: Params = Depends(), 
     db: DBDep,
+    params: Params = Depends(),
     admin: AdminDep,
     username: list[str] = Query(None),
     order_by: UsersSortingOptions = Query(None),
