@@ -121,7 +121,13 @@ def get_users(
             "page": 1,
             "size": len(users),
             "pages": 1,
-            "links": {},
+            "links": {
+                "first": None,
+                "last": None,
+                "self": None,
+                "next": None,
+                "prev": None
+            }
         }
 
 
