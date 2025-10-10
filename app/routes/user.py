@@ -60,8 +60,8 @@ user_filters = [
 def get_users(
     request: Request,
     db: DBDep,
-    params: Params = Depends(),
     admin: AdminDep,
+    params: Params = Depends(),
     username: list[str] = Query(None),
     order_by: UsersSortingOptions = Query(None),
     descending: bool = Query(False),
