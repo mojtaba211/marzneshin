@@ -10,6 +10,7 @@ from fastapi_pagination.ext.sqlalchemy import paginate
 from fastapi_pagination import Params
 from fastapi_pagination.links import Page
 from fastapi import Request
+from fastapi import Depends
 
 from app import marznode
 from app.db import crud, User
