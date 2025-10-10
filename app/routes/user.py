@@ -113,16 +113,16 @@ def get_users(
 
     if "page" in request.query_params or "size" in request.query_params:
         return paginate(db, query,params)
-    # else:
-    #     users = query.all()
-    #     return {
-    #         "items": [UserResponse.model_validate(u) for u in users],
-    #         "total": len(users),
-    #         "page": 1,
-    #         "size": len(users),
-    #         "pages": 1,
-    #         "links": {},
-    #     }
+    else:
+        users = query.all()
+        return {
+            "items": [UserResponse.model_validate(u) for u in users],
+            "total": len(users),
+            "page": 1,
+            "size": len(users),
+            "pages": 1,
+            "links": {},
+        }
 
 
 @router.post("", response_model=UserResponse)
