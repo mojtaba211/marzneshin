@@ -119,7 +119,7 @@ def get_users(
             "items": [UserResponse.model_validate(u) for u in users],
             "total": len(users),
             "page": 1,
-            "size": len(users),
+            "size": max(len(users), 1),
             "pages": 1,
             "links": {
                 "first": None,
