@@ -114,7 +114,11 @@ async def node_logs(
             except WebSocketDisconnect:
                 break
     finally:
-        await websocket.close()
+        try:
+            await websocket.close()
+        except RuntimeError:
+            pass
+
 
 
 @router.put("/{node_id}", response_model=NodeResponse)
