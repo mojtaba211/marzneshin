@@ -242,6 +242,13 @@ async def modify_user(
     - set **enable** to true/false to enable or disable user
     - set **data_limit** to 0 to make the user unlimited in data, null for no change
     """
+    # ✅ اضافه کردن پشتیبانی از enable/disable
+    if modifications.enable is not None:
+        if modifications.enable and not db_user.enabled:
+            await enable_user(db_user, db, admin, modify_access)
+        elif not modifications.enable and db_user.enabled:
+            await disable_user(db_user, db, admin, modify_access)
+            
     active_before = db_user.is_active
 
     old_inbounds = {(i.node_id, i.protocol, i.tag) for i in db_user.inbounds}
@@ -256,12 +263,7 @@ async def modify_user(
         ),
     )
     
-    # ✅ اضافه کردن پشتیبانی از enable/disable
-    if modifications.enable is not None:
-        if modifications.enable and not db_user.enabled:
-            await enable_user(db_user, db, admin, modify_access)
-        elif not modifications.enable and db_user.enabled:
-            await disable_user(db_user, db, admin, modify_access)
+    
             
     active_after = new_user.is_active
     new_inbounds = {(i.node_id, i.protocol, i.tag) for i in new_user.inbounds}
