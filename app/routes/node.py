@@ -221,7 +221,7 @@ async def alter_node_xray_config(
         raise HTTPException(status_code=404, detail="Node not found")
 
     try:
-        print(config.config)
+        print(config)
         await asyncio.wait_for(
             node.restart_backend(
                 name=backend,
