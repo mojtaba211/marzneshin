@@ -12,12 +12,12 @@ from uuid import UUID
 from jdatetime import date as jd
 from v2share import (
     V2Data,
-    SingBoxConfig,
     ClashConfig,
     ClashMetaConfig,
     XrayConfig,
     WireGuardConfig,
 )
+from app.utils.sing_box_config import SingBoxConfig
 from v2share.base import BaseConfig
 from v2share.data import MuxCoolSettings as V2MuxCoolSettings
 from v2share.data import MuxSettings as V2MuxSettings
@@ -30,6 +30,7 @@ from v2share.links import LinksConfig
 from app.config.env import (
     XRAY_SUBSCRIPTION_TEMPLATE,
     SINGBOX_SUBSCRIPTION_TEMPLATE,
+    SING_BOX_SCHEMA_VARIANT,
     CLASH_SUBSCRIPTION_TEMPLATE,
     SUBSCRIPTION_PAGE_TEMPLATE,
 )
@@ -108,12 +109,17 @@ def generate_subscription(
         raise ValueError(f'Unsupported format "{config_format}"')
 
     subscription_handler_class = subscription_handlers[config_format]
+    init_kwargs = {}
+    if subscription_handler_class is SingBoxConfig:
+        init_kwargs["schema_variant"] = SING_BOX_SCHEMA_VARIANT
+
     if template_path := handlers_templates[subscription_handler_class]:
         subscription_handler = subscription_handler_class(
-            template_path=template_path
+            template_path=template_path,
+            **init_kwargs,
         )
     else:
-        subscription_handler = subscription_handler_class()
+        subscription_handler = subscription_handler_class(**init_kwargs)
 
     if use_placeholder:
         placeholder_config = V2Data(
