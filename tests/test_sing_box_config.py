@@ -76,22 +76,13 @@ def test_dns_and_route_follow_new_schema_defaults():
 
     route = data["route"]
     dns_rule = route["rules"][0]
-    ruleset_rule = route["rules"][1]
-    local_rule = route["rules"][2]
+    local_rule = route["rules"][1]
 
     assert dns_rule["protocol"] == ["dns"]
-    assert ruleset_rule["rule_set"] == "geosite-cn"
-    assert ruleset_rule["outbound"] == "direct"
     assert local_rule["outbound"] == "direct"
     assert "ip_cidr" in local_rule
     assert "geoip" not in local_rule
     assert "geoip" not in route
-    assert route["rule_set"][0]["tag"] == "geosite-cn"
-    assert route["rule_set"][0]["type"] == "remote"
-    assert route["rule_set"][0]["download_detour"] == "proxy"
-
-    cache_file = data["experimental"]["cache_file"]
-    assert cache_file["enabled"] is True
 
 
 def test_legacy_detour_mode_keeps_backward_compatibility():
@@ -114,5 +105,8 @@ def test_legacy_detour_mode_keeps_backward_compatibility():
 
     route = data["route"]
     dns_rule = route["rules"][0]
+    local_rule = route["rules"][1]
+
     assert dns_rule["protocol"] == ["dns"]
-    assert route["rule_set"][0]["tag"] == "geosite-cn"
+    assert local_rule["outbound"] == "direct"
+    assert "ip_cidr" in local_rule

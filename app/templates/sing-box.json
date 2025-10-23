@@ -27,10 +27,6 @@
       {
         "outbound": "any",
         "server": "dns-local"
-      },
-      {
-        "geosite": "category-ads-all",
-        "server": "dns-block"
       }
     ],
     "final": "dns-remote"
@@ -91,10 +87,6 @@
         "outbound": "dns-out"
       },
       {
-        "rule_set": "geosite-cn",
-        "outbound": "direct"
-      },
-      {
         "ip_cidr": [
           "10.0.0.0/8",
           "172.16.0.0/12",
@@ -109,21 +101,6 @@
     ],
     "final": "proxy",
     "auto_detect_interface": true,
-    "override_android_vpn": true,
-    "rule_set": [
-      {
-        "tag": "geosite-cn",
-        "type": "remote",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
-        "download_detour": "proxy"
-      }
-    ]
-  },
-  "experimental": {
-    "cache_file": {
-      "enabled": true,
-      "store_rdrc": true
-    }
+    "override_android_vpn": true
   }
 }
