@@ -1,28 +1,39 @@
 {
   "log": {
-    "level": "warn"
+    "level": "warn",
+    "timestamp": true
   },
   "dns": {
+    "strategy": "prefer_ipv4",
+    "independent_cache": true,
     "servers": [
       {
         "tag": "dns-remote",
-        "address": "1.1.1.2",
+        "address": "https://1.1.1.2/dns-query",
+        "address_strategy": "prefer_ipv4",
         "detour": "proxy"
       },
       {
         "tag": "dns-local",
         "address": "local",
         "detour": "direct"
+      },
+      {
+        "tag": "dns-block",
+        "address": "rcode://success"
       }
     ],
     "rules": [
       {
         "outbound": "any",
         "server": "dns-local"
+      },
+      {
+        "geosite": "category-ads-all",
+        "server": "dns-block"
       }
     ],
-    "final": "dns-remote",
-    "strategy": "prefer_ipv4"
+    "final": "dns-remote"
   },
   "inbounds": [
     {
@@ -39,20 +50,24 @@
         "fc00::/7"
       ],
       "sniff": true,
-      "domain_strategy": "prefer_ipv4"
+      "domain_strategy": "prefer_ipv4",
+      "stack": "mixed"
     }
   ],
   "outbounds": [
     {
       "type": "selector",
       "tag": "proxy",
-      "outbounds": null,
+      "outbounds": [],
+      "default": "Best Latency",
       "interrupt_exist_connections": true
     },
     {
       "type": "urltest",
       "tag": "Best Latency",
-      "outbounds": null
+      "outbounds": [],
+      "interval": "1m",
+      "tolerance": 30
     },
     {
       "type": "direct",
@@ -70,17 +85,40 @@
   "route": {
     "rules": [
       {
-        "protocol": "dns",
+        "protocol": [
+          "dns"
+        ],
         "outbound": "dns-out"
       },
       {
-        "ip_is_private": true,
+        "rule_set": "geosite-cn",
+        "outbound": "direct"
+      },
+      {
+        "ip_cidr": [
+          "10.0.0.0/8",
+          "172.16.0.0/12",
+          "192.168.0.0/16",
+          "127.0.0.0/8",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ],
         "outbound": "direct"
       }
     ],
     "final": "proxy",
     "auto_detect_interface": true,
-    "override_android_vpn": true
+    "override_android_vpn": true,
+    "rule_set": [
+      {
+        "tag": "geosite-cn",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-cn.srs",
+        "download_detour": "proxy"
+      }
+    ]
   },
   "experimental": {
     "cache_file": {
